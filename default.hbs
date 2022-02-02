@@ -31,7 +31,7 @@
                 <section class="copyright">
                     <a href="{{@site.url}}">{{@site.title}}</a> &copy; {{date format="YYYY"}}
                     <a href="{{@site.url}}">Home</a>
-                    <a href="{{@site.url}}/signup">Signup</a>
+                    <a href="#/portal/signup">Signup</a>
                     {{#if @site.secondary_navigation}}
                     {{navigation type="secondary"}}
                     {{/if}}
@@ -73,84 +73,26 @@
 
     <script src="{{asset "built/infinitescroll.js"}}"></script>
 
-    {{!-- Scripts for Members subscription --}}
-    <script>
-        // Parse the URL parameter
-        function getParameterByName(name, url) {
-            if (!url) url = window.location.href;
-            name = name.replace(/[\[\]]/g, "\\$&");
-            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-                results = regex.exec(url);
-            if (!results) return null;
-            if (!results[2]) return '';
-            return decodeURIComponent(results[2].replace(/\+/g, " "));
-        }
-
-        // Give the parameter a variable name
-        var action = getParameterByName('action');
-        var stripe = getParameterByName('stripe');
-        var success = getParameterByName('success');
-
-        $(document).ready(function () {
-            if (action == 'subscribe') {
-                $('body').addClass("subscribe-success");
-            }
-            if (action == 'signup') {
-                window.location = '{{@site.url}}/signup/?action=checkout';
-            }
-            if (action == 'checkout') {
-                $('body').addClass("signup-success");
-            }
-            // Success === null is here for backwards compatibility, can be removed shortly
-            if (action == 'signin' && (success === null || success === 'true')) {
-                $('body').addClass("signin-success");
-            }
-            if (action == 'signin' && success === 'false') {
-                $('body').addClass("signin-failure");
-            }
-            if (stripe == 'success') {
-                $('body').addClass("checkout-success");
-            }
-            if (stripe == 'billing-update-success') {
-                $('body').addClass("billing-success");
-            }
-            if (stripe == 'billing-update-cancel') {
-                $('body').addClass("billing-cancel");
-            }
-
-            $('.notification-close').click(function () {
-                $(this).parent().addClass('closed');
-                var uri = window.location.toString();
-                if (uri.indexOf("?") > 0) {
-                    var clean_uri = uri.substring(0, uri.indexOf("?"));
-                    window.history.replaceState({}, document.title, clean_uri);
-                }
-            });
-
-            // Reset form on opening subscrion overlay
-            $('.subscribe-button').click(function() {
-                $('.subscribe-overlay form').removeClass();
-                $('.subscribe-email').val('');
-            });
-
-            // Account navigation menu
-            $('.account-menu-avatar').click(function(event) {
-                $(this).toggleClass('active');
-                event.stopPropagation();
-            });
-
-            $('.account-menu-dropdown').click(function(event) {
-                event.stopPropagation();
-            });
-
-            $('body').click(function () {
-                $('.account-menu-avatar').removeClass('active');
-            });
-        });
-    </script>
-
     {{!-- The #block helper will pull in data from the #contentFor other template files. In this case, there's some JavaScript which we only want to use in post.hbs, but it needs to be included down here, after jQuery has already loaded. --}}
     {{{block "scripts"}}}
+
+   <script>
+       $(document).ready(function () {
+           // Account navigation menu
+           $('.account-menu-avatar').click(function(event) {
+               $(this).toggleClass('active');
+               event.stopPropagation();
+           });
+
+           $('.account-menu-dropdown').click(function(event) {
+               event.stopPropagation();
+           });
+
+           $('body').click(function () {
+               $('.account-menu-avatar').removeClass('active');
+           });
+       });
+   </script>
 
     {{!-- Ghost outputs important scripts and data with this tag - it should always be the very last thing before the closing body tag --}}
     {{ghost_foot}}

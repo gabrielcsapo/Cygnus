@@ -4,6 +4,11 @@
 
 A paid-members publication for Ghost. Can be used with no code knowledge required.
 
+# What's different
+
+- Paid posts have a tag that show paid, not free
+- We are using the built in portal, not the custom members experience
+
 # Instructions
 
 1. [Download this theme](https://github.com/gabrielcsapo/Cygnus/archive/main.zip)
